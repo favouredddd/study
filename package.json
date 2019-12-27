@@ -1,0 +1,18 @@
+{
+    "name": "test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "split.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tencent/wow-core": "^1.2.7",
+        "csvtojson": "^2.0.10",
+        "encoding": "^0.1.12",
+        "jschardet": "^2.1.1",
+        "json2csv": "^4.5.4"
+    }
+}
