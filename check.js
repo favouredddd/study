@@ -9,7 +9,7 @@ const logger = new WowLogger("caige_tools").logger
 const transform = async (arr, number) => {
     console.log(`开始切片${number}一个文件`)
     const spliteArr = [];
-    arr = arr.slice(1);
+    arr = arr;
     console.log(`开始切片一共${arr.length}文件`)
     while (arr.length) {
         const r = arr.slice(0, number)
@@ -22,7 +22,7 @@ const check = async (checkAudio, fileName) => {
     console.log("check 服务")
     const csvPath = path.resolve(__dirname, `./tem/${fileName}.csv`);
     const dirPath = path.resolve(__dirname, "./org/audios/");
-
+    console.log(fs.readdirSync(dirPath).length)
     Checker.setCheckItem(csvPath, dirPath + "/")
 
     try {
@@ -58,14 +58,13 @@ const splitFile = async (data, fileName) => {
         await deleteFile(dir)
     }
     fs.mkdirSync(dir);
-    // console.log(data);
     return await Promise.all(data.map((item, index) => {
         return new Promise(async (resolve, reject) => {
             // console.log(item)
             const fields = Object.keys(item[0]);
             item.forEach(i => {
                 Object.keys(i).forEach(j => {
-                    i[j] = i[j].toString().replace(',', '|');
+                    i[j] = i[j].replace(/\,/g, "|");
                 })
             })
             const myCars = item;
@@ -92,22 +91,8 @@ const start = async () => {
     const opt = { name: `${fileName}.csv`, path: path.join(__dirname, `./org/${fileName}.csv`) };
     const copyResult = await copyfile(opt, path.join(__dirname, './tem/'))
     const { data, error } = await check(false, fileName)
+    console.log(data.length)
     const { spliteArr } = await transform(data, number);
     const doSplitResult = splitFile(spliteArr, fileName);
 }
-// start();
-const createNode = (list) => {
-    let first;
-    const lastNode = list.reduce((last, now) => {
-        const node = { value: now, next: null }
-        if (last) {
-            last.next = node;
-        } else {
-            first = node;
-        }
-        return node;
-    }, null);
-    lastNode.next = first;
-    return first;
-}
-console.log(createNode([1, 2, 3, 4, 5, 6, 7]))
+start();
